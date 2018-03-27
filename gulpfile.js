@@ -1,0 +1,22 @@
+////////////////////////////////////
+/// Require
+////////////////////////////////////
+var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+
+
+////////////////////////////////////
+/// Scripts
+////////////////////////////////////
+gulp.task('script', function() {
+    console.log('BUild process starting...');
+    gulp.src('index.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('build'));
+});
+
+
+////////////////////////////////////
+/// Default task
+////////////////////////////////////
+gulp.task('default', ['script']);
