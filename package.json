@@ -3,27 +3,25 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "dependencies": {
-        "del": "^3.0.0",
-        "gulp": "^3.9.1",
-        "gulp-autoprefixer": "^5.0.0",
-        "gulp-compass": "^2.1.0",
-        "gulp-plumber": "^1.2.0",
-        "gulp-rename": "^1.2.2",
-        "gulp-uglify": "^3.0.0"
+    "dependencies": {},
+    "devDependencies": {
+        "gulp": "^4.0.0",
+        "gulp-inject": "^4.3.2",
+        "gulp-rimraf": "^0.2.2",
+        "gulp-uglify": "^3.0.0",
+        "gulp-webserver": "^0.9.1"
     },
-    "devDependencies": {},
     "scripts": {
         "test": "test"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/SerbanBlebea/gulp-build-project.git"
+        "url": "git+http://github.com/SerbanBlebea/gulp-build-project.git"
     },
     "author": "Serban Blebea <slabestecuserban@gmail.com>",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/SerbanBlebea/gulp-build-project/issues"
+        "url": "http://github.com/SerbanBlebea/gulp-build-project/issues"
     },
-    "homepage": "https://github.com/SerbanBlebea/gulp-build-project#readme"
+    "homepage": "http://github.com/SerbanBlebea/gulp-build-project#readme"
 }
