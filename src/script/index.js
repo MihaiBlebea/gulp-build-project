@@ -1,7 +1,7 @@
 (function() {
     function sayHello()
     {
-        document.getElementById('app').innerHTML = 'Hello new Year ' + getTime() + ' my name is Mihai.';
+        document.getElementById('app').innerHTML = 'Hello new Year ' + getTime() + ' my name is Cristina.';
     }
 
     function getTime()
