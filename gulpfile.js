@@ -8,6 +8,7 @@ var clean = require('gulp-rimraf');
 var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
 var cleanCSS = require('gulp-clean-css');
+var concat = require('gulp-concat');
 
 var paths = {
     src: 'src/**/*',
@@ -38,6 +39,7 @@ function getExtension(file)
 function script()
 {
     return gulp.src(paths.srcJS)
+                .pipe(concat('script.min.js'))
                 .pipe(uglify())
                 .pipe(gulp.dest(paths.tmpJS));
 }
@@ -45,6 +47,7 @@ function script()
 function css()
 {
     return gulp.src(paths.srcCSS)
+                .pipe(concat('style.min.css'))
                 .pipe(cleanCSS({compatibility: 'ie8'}))
                 .pipe(gulp.dest(paths.tmpCSS));
 }
