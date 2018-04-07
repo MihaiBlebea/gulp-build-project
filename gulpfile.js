@@ -6,6 +6,9 @@ var webserver = require('gulp-webserver');
 var inject = require('gulp-inject');
 var clean = require('gulp-rimraf');
 var uglify = require('gulp-uglify');
+var htmlmin = require('gulp-htmlmin');
+var cleanCSS = require('gulp-clean-css');
+var concat = require('gulp-concat');
 
 var paths = {
     src: 'src/**/*',
@@ -36,20 +39,24 @@ function getExtension(file)
 function script()
 {
     return gulp.src(paths.srcJS)
+                .pipe(concat('script.min.js'))
                 .pipe(uglify())
                 .pipe(gulp.dest(paths.tmpJS));
 }
 
 function css()
 {
-    console.log('ceva')
     return gulp.src(paths.srcCSS)
+                .pipe(concat('style.min.css'))
+                .pipe(cleanCSS({compatibility: 'ie8'}))
                 .pipe(gulp.dest(paths.tmpCSS));
 }
 
 function html()
 {
-    return gulp.src(paths.srcHTML).pipe(gulp.dest(paths.tmp));
+    return gulp.src(paths.srcHTML)
+                .pipe(htmlmin({collapseWhitespace: true}))
+                .pipe(gulp.dest(paths.tmp));
 }
 
 function copy(source, destination)
@@ -88,15 +95,13 @@ watcher.on('all', function(event, path) {
     if(event == 'change')
     {
         var extension = getExtension(path);
-        console.log(extension)
         switch(extension)
         {
             case 'css':
-                console.log('this is css')
-                gulp.task(css)
+                gulp.task(css())
                 break;
             case 'js':
-                gulp.task(script)
+                gulp.task(script())
                 break;
             default:
                 console.log('FIle format not found');
