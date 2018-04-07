@@ -9,6 +9,9 @@ var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
+var eslint = require('gulp-eslint');
+// Test React JSX to JS
+var babel = require('gulp-babel');
 
 var paths = {
     src: 'src/**/*',
@@ -89,6 +92,19 @@ gulp.task('inject', gulp.series(['clean', 'copy'], function () {
                .pipe(gulp.dest(paths.tmp));
 }));
 
+// TODO Add linting to the project
+// gulp.task('lint', function() {
+//     return gulp.src(['**/*.js','!node_modules/**'])
+//         .pipe(eslint())
+//         .pipe(eslint.format())
+//         .pipe(eslint.results(function(results) {
+//             console.log(`Total Results: ${results.length}`);
+//             console.log(`Total Warnings: ${results.warningCount}`);
+//             console.log(`Total Errors: ${results.errorCount}`);
+//         }))
+//         .pipe(eslint.formatEach('compact', process.stderr));
+// });
+
 // Watch for changes
 var watcher = gulp.watch('./src');
 watcher.on('all', function(event, path) {
@@ -108,6 +124,14 @@ watcher.on('all', function(event, path) {
                 break;
         }
     }
+});
+
+gulp.task('babel', function() {
+    return gulp.src('test-react/*.jsx').
+        pipe(babel({
+            plugins: ['transform-react-jsx']
+        })).
+        pipe(gulp.dest('test-react/'));
 });
 
 ////////////////////////////////////

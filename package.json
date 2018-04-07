@@ -3,7 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "dependencies": {},
+    "dependencies": {
+        "babel-core": "^6.26.0",
+        "babel-plugin-transform-react-jsx": "^6.24.1",
+        "gulp-babel": "^7.0.1",
+        "gulp-eslint": "^4.0.2",
+        "react": "^16.3.1"
+    },
     "devDependencies": {
         "gulp": "^4.0.0",
         "gulp-clean-css": "^3.9.3",
