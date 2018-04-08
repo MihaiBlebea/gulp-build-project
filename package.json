@@ -4,24 +4,32 @@
     "description": "",
     "main": "index.js",
     "dependencies": {
-        "babel-core": "^6.26.0",
-        "babel-plugin-transform-react-jsx": "^6.24.1",
-        "gulp-babel": "^7.0.1",
-        "gulp-eslint": "^4.0.2",
-        "react": "^16.3.1"
+        "react": "^16.3.1",
+        "react-dom": "^16.3.1"
     },
     "devDependencies": {
-        "gulp": "^4.0.0",
+        "babel-core": "^6.26.0",
+        "babel-plugin-transform-react-jsx": "^6.24.1",
+        "gulp": "^4.0",
+        "gulp-babel": "^7.0.1",
         "gulp-clean-css": "^3.9.3",
+        "gulp-cli": "^2.0.1",
         "gulp-concat": "^2.6.1",
         "gulp-htmlmin": "^4.0.0",
         "gulp-inject": "^4.3.2",
+        "gulp-react": "^3.1.0",
         "gulp-rimraf": "^0.2.2",
+        "gulp-sourcemaps": "^2.6.4",
         "gulp-uglify": "^3.0.0",
-        "gulp-webserver": "^0.9.1"
+        "gulp-webserver": "^0.9.1",
+        "webpack-stream": "^4.0.3"
     },
     "scripts": {
-        "test": "test"
+        "test": "test",
+        "gulp": "gulp",
+        "gulp:copy": "gulp copy",
+        "gulp:react": "gulp react",
+        "gulp:webpack": "gulp webpack"
     },
     "repository": {
         "type": "git",

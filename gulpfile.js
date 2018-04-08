@@ -9,20 +9,23 @@ var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
-var eslint = require('gulp-eslint');
 // Test React JSX to JS
-var babel = require('gulp-babel');
+// var babel = require('gulp-babel');
+var react = require('gulp-react');
+var webpack = require('webpack-stream');
 
 var paths = {
     src: 'src/**/*',
     srcHTML: 'src/*.html',
     srcCSS: 'src/css/*.css',
     srcJS: 'src/script/*.js',
+    srcJSX: 'src/jsx/*.jsx',
 
     tmp: 'tmp',
     tmpIndex: 'tmp/index.html',
     tmpCSS: 'tmp/css/',
     tmpJS: 'tmp/js/',
+    tmpJSX: 'tmp/jsx/',
 
     dist: 'dist',
     distIndex: 'dist/index.html',
@@ -62,7 +65,7 @@ function html()
                 .pipe(gulp.dest(paths.tmp));
 }
 
-function copy(source, destination)
+function genericCopy(source, destination)
 {
     return gulp.src(source).pipe(gulp.dest(destination));
 }
@@ -82,8 +85,22 @@ gulp.task('clean', function() {
     return gulp.src('./tmp/*', { read: false }).pipe(clean());
 });
 
+gulp.task('react', function () {
+    return gulp.src(paths.srcJSX)
+        .pipe(react({ es6module: true }))
+        .pipe(gulp.dest(paths.tmpJSX));
+});
+
+gulp.task('webpack', gulp.series('react', function() {
+    return gulp.src(paths.tmpJSX + '/index.js')
+        .pipe(webpack({
+            devtool: 'source-map'
+        }))
+        .pipe(gulp.dest(paths.tmpJS));
+}));
+
 // Inject files in the index.html
-gulp.task('inject', gulp.series(['clean', 'copy'], function () {
+gulp.task('inject', gulp.series(['clean', 'copy', 'webpack'], function () {
     var css = gulp.src(paths.tmpCSS + '/*.css');
     var js = gulp.src(paths.tmpJS + '/*.js');
     return gulp.src(paths.tmpIndex)
@@ -93,17 +110,6 @@ gulp.task('inject', gulp.series(['clean', 'copy'], function () {
 }));
 
 // TODO Add linting to the project
-// gulp.task('lint', function() {
-//     return gulp.src(['**/*.js','!node_modules/**'])
-//         .pipe(eslint())
-//         .pipe(eslint.format())
-//         .pipe(eslint.results(function(results) {
-//             console.log(`Total Results: ${results.length}`);
-//             console.log(`Total Warnings: ${results.warningCount}`);
-//             console.log(`Total Errors: ${results.errorCount}`);
-//         }))
-//         .pipe(eslint.formatEach('compact', process.stderr));
-// });
 
 // Watch for changes
 var watcher = gulp.watch('./src');
@@ -124,14 +130,6 @@ watcher.on('all', function(event, path) {
                 break;
         }
     }
-});
-
-gulp.task('babel', function() {
-    return gulp.src('test-react/*.jsx').
-        pipe(babel({
-            plugins: ['transform-react-jsx']
-        })).
-        pipe(gulp.dest('test-react/'));
 });
 
 ////////////////////////////////////
