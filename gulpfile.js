@@ -9,17 +9,23 @@ var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
 var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
+// Test React JSX to JS
+// var babel = require('gulp-babel');
+var react = require('gulp-react');
+var webpack = require('webpack-stream');
 
 var paths = {
     src: 'src/**/*',
     srcHTML: 'src/*.html',
     srcCSS: 'src/css/*.css',
     srcJS: 'src/script/*.js',
+    srcJSX: 'src/jsx/*.jsx',
 
     tmp: 'tmp',
     tmpIndex: 'tmp/index.html',
     tmpCSS: 'tmp/css/',
     tmpJS: 'tmp/js/',
+    tmpJSX: 'tmp/jsx/',
 
     dist: 'dist',
     distIndex: 'dist/index.html',
@@ -59,7 +65,7 @@ function html()
                 .pipe(gulp.dest(paths.tmp));
 }
 
-function copy(source, destination)
+function genericCopy(source, destination)
 {
     return gulp.src(source).pipe(gulp.dest(destination));
 }
@@ -79,8 +85,22 @@ gulp.task('clean', function() {
     return gulp.src('./tmp/*', { read: false }).pipe(clean());
 });
 
+gulp.task('react', function () {
+    return gulp.src(paths.srcJSX)
+        .pipe(react({ es6module: true }))
+        .pipe(gulp.dest(paths.tmpJSX));
+});
+
+gulp.task('webpack', gulp.series('react', function() {
+    return gulp.src(paths.tmpJSX + '/index.js')
+        .pipe(webpack({
+            devtool: 'source-map'
+        }))
+        .pipe(gulp.dest(paths.tmpJS));
+}));
+
 // Inject files in the index.html
-gulp.task('inject', gulp.series(['clean', 'copy'], function () {
+gulp.task('inject', gulp.series(['clean', 'copy', 'webpack'], function () {
     var css = gulp.src(paths.tmpCSS + '/*.css');
     var js = gulp.src(paths.tmpJS + '/*.js');
     return gulp.src(paths.tmpIndex)
@@ -88,6 +108,8 @@ gulp.task('inject', gulp.series(['clean', 'copy'], function () {
                .pipe(inject(js, { relative:true }))
                .pipe(gulp.dest(paths.tmp));
 }));
+
+// TODO Add linting to the project
 
 // Watch for changes
 var watcher = gulp.watch('./src');
